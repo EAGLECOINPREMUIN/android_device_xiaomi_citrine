@@ -11,8 +11,8 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build TWRP
-      uses: CaptainThrowback/action-recovery-builder@master
-      env:
+      uses: azwhikaru/action-twrp-builder@main
+      with:
         MANIFEST_BRANCH: twrp-12.1
         DEVICE_TREE: https://github.com/EAGLECOINPREMUIN/android_device_xiaomi_citrine
         DEVICE_TREE_BRANCH: main
