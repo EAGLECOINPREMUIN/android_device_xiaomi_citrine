@@ -2,25 +2,6 @@ name: Build TWRP for citrine
 
 on:
   workflow_dispatch:
-    inputs:
-      MANIFEST_BRANCH:
-        description: 'TWRP Manifest Branch'
-        default: 'twrp-12.1'
-      DEVICE_TREE:
-        description: 'Device Tree URL'
-        default: 'https://github.com/EAGLECOINPREMUIN/android_device_xiaomi_citrine'
-      DEVICE_TREE_BRANCH:
-        description: 'Device Tree Branch'
-        default: 'main'
-      DEVICE_NAME:
-        description: 'Device Name'
-        default: 'citrine'
-      MAKEFILE_NAME:
-        description: 'Makefile Name'
-        default: 'twrp_citrine'
-      BUILD_TARGET:
-        description: 'Build Target'
-        default: 'vendorboot'
 
 jobs:
   build:
@@ -29,17 +10,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set Swap Space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 12
-
     - name: Build TWRP
-      uses: azwhikaru/action-twrp-builder@main
-      with:
-        MANIFEST_BRANCH: ${{ github.event.inputs.MANIFEST_BRANCH }}
-        DEVICE_TREE: ${{ github.event.inputs.DEVICE_TREE }}
-        DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}
-        DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME }}
-        MAKEFILE_NAME: ${{ github.event.inputs.MAKEFILE_NAME }}
-        BUILD_TARGET: ${{ github.event.inputs.BUILD_TARGET }}
+      uses: CaptainThrowback/action-recovery-builder@master
+      env:
+        MANIFEST_BRANCH: twrp-12.1
+        DEVICE_TREE: https://github.com/EAGLECOINPREMUIN/android_device_xiaomi_citrine
+        DEVICE_TREE_BRANCH: main
+        DEVICE_NAME: citrine
+        MAKEFILE_NAME: twrp_citrine
+        BUILD_TARGET: vendorboot
