@@ -12,51 +12,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set swap space
-      uses: pierotofy/set-swap-space@master
+    - name: Build Recovery
+      uses: smoothie-player/action-build-recovery@main
       with:
-        swap-size-gb: 12
-
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y git-core gnupg flex bison build-essential \
-        zip curl zlib1g-dev libncurses5-dev libx11-dev libgl1-mesa-dev \
-        libxml2-utils xsltproc unzip python3 python-is-python3 bc
-
-    - name: Install repo
-      run: |
-        mkdir -p ~/bin
-        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-        chmod a+x ~/bin/repo
-        echo "$HOME/bin" >> $GITHUB_PATH
-
-    - name: Configure git
-      run: |
-        git config --global user.email "jcasierra462@gmail.com"
-        git config --global user.name "EAGLECOINPREMUIN"
-
-    - name: Sync TWRP source
-      run: |
-        mkdir -p ~/twrp
-        cd ~/twrp
-        repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
-        repo sync -j4 --force-sync --no-clone-bundle --no-tags
-
-    - name: Clone device tree
-      run: |
-        mkdir -p ~/twrp/device/xiaomi/citrine
-        cp -r $GITHUB_WORKSPACE/* ~/twrp/device/xiaomi/citrine/
-
-    - name: Build TWRP
-      run: |
-        cd ~/twrp
-        source build/envsetup.sh
-        lunch twrp_citrine-eng
-        mka vendorbootimage -j$(nproc)
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: twrp-citrine
-        path: ~/twrp/out/target/product/citrine/vendor_boot.img
+        MANIFEST_TYPE: twrp
+        MANIFEST_BRANCH: twrp-12.1
+        DEVICE_TREE: https://github.com/EAGLECOINPREMUIN/android_device_xiaomi_citrine
+        DEVICE_TREE_BRANCH: main
+        DEVICE_PATH: device/xiaomi/citrine
+        DEVICE_NAME: citrine
+        MAKEFILE_NAME: twrp_citrine
+        BUILD_TARGET: vendorboot
+        UPLOAD_RELEASE: true
