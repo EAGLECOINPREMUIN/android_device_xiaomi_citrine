@@ -9,24 +9,12 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: Cache TWRP source
-      uses: actions/cache@v3
+    - name: Build TWRP
+      uses: azwhikaru/action-twrp-builder@main
       with:
-        path: ~/twrp
-        key: twrp-source-12.1
-
-    - name: Build Recovery
-      uses: smoothie-player/action-build-recovery@main
-      with:
-        MANIFEST_TYPE: twrp
         MANIFEST_BRANCH: twrp-12.1
         DEVICE_TREE: https://github.com/EAGLECOINPREMUIN/android_device_xiaomi_citrine
         DEVICE_TREE_BRANCH: main
-        DEVICE_PATH: device/xiaomi/citrine
         DEVICE_NAME: citrine
         MAKEFILE_NAME: twrp_citrine
         BUILD_TARGET: vendorboot
-        UPLOAD_RELEASE: true
