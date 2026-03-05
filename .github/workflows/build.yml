@@ -12,6 +12,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Cache TWRP source
+      uses: actions/cache@v3
+      with:
+        path: ~/twrp
+        key: twrp-source-12.1
+
     - name: Build Recovery
       uses: smoothie-player/action-build-recovery@main
       with:
